@@ -1,13 +1,13 @@
 {
   "name": "@cool-cli/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "cool-cli core",
   "author": "zhoujin <1391020381@qq.com>",
   "homepage": "https://github.com/1391020381/cool-cli#readme",
   "license": "ISC",
   "main": "lib/core.js",
-  "bin":{
-    "cool-cli":"bin/index.js"
+  "bin": {
+    "cool-cli": "bin/index.js"
   },
   "directories": {
     "lib": "lib",
