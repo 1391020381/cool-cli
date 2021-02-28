@@ -9,6 +9,9 @@
   "bin": {
     "cool-cli": "bin/index.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -25,5 +28,6 @@
   },
   "bugs": {
     "url": "https://github.com/1391020381/cool-cli/issues"
-  }
+  },
+  "gitHead": "4236556031fed7d9ade4098af8c434188346b94a"
 }
