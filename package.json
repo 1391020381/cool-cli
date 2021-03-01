@@ -4,7 +4,5 @@
   "devDependencies": {
     "lerna": "^3.22.1"
   },
-  "dependencies": {
-    "@cool-cli/core": "0.0.3"
-  }
+  "dependencies": {}
 }
