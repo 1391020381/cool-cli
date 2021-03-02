@@ -19,12 +19,28 @@ function core() {
         checkUserHome()
         checkInputArgs()
         checkEnv()
+        checkGlobalUpate()
         log.verbose('debug','test debug log')
     }catch(e){
         log.error(e.message)
     }
 }
 
+ async function checkGlobalUpate(){
+    // 1. 获取当前版本号和模块名
+    const currentVersion = pkg.version
+    const npmName = pkg.name
+    const { getNpmSemverVersion } = require('@cool-cli/get-npm-info')
+    const lastversions = await getNpmSemverVersion(currentVersion,npmName)
+    if(lastversions && semver.gt(lastversions,currentVersion)){
+        log.warn('更新提示',colors.yellow(`请手动更新${npmName}，当前版本:${currentVersion},最新版本:${lastversions}
+            更新命令: npm install -g ${npmName};
+        `))
+    }
+    // 2. 调用npm API 获取所有版本号
+    // 3. 提取所有版本号 比对哪些版本号是大于当前版本号
+    // 4. 获取最新的版本号,提示用户更新到该版本
+}
 function checkEnv(){
     const dotenv  = require('dotenv')
     const dotenvPath = path.resolve(userHome,'.env')
