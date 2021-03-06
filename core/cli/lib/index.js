@@ -34,23 +34,27 @@ function registerCommand(){
         .name(Object.keys(pkg.bin)[0])
         .usage('<command> [options]')
         .version(pkg.version)
-        .option('-d,--debug','是否开启调试模式',false);
-    
+        .option('-d,--debug','是否开启调试模式',false)
+        .option('-tp,--targetPath <targetPath>','是否指定本地调试文件路径','')
     program
         .command('init [projectName]')
         .option('-f,--force','是否强制初始化项目')
         .action(init)    
     program.on('option:debug',function(){
         // program.debug 获取不到
-        console.log(program)
-        if(program.debug){
+        let opts = program.opts()
+        if(opts.debug){
             process.env.LOG_LEVEL = 'verbose'
         }else{
             process.env.LOG_LEVEL = 'info'
         }
         log.level = process.env.LOG_LEVEL
-        log.verbose('test','verboseverboseverboseverboseverboseverbose')
+        
     }) 
+    program.on('option:targetPath',function(){
+        let opts = program.opts()
+        process.env.CLI_TARGETPATH = opts.targetPath
+    })
     program.on('command:*',function(obj){
         const availableCommands = program.commands.map(cmd=> cmd.name())
         console.log(colors.red('未知的命令:' + obj[0]))
@@ -59,10 +63,10 @@ function registerCommand(){
         }
     })  
     program.parse(process.argv);
-    // console.log(program)
+    
     if(program.args && program.args.length < 1){
         program.outputHelp()
-        console.log
+        console.log()
     } 
 }
 

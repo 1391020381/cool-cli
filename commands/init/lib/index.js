@@ -3,7 +3,6 @@
 module.exports = init;
 
 function init(projectName,cmdObj) {
-    console.log('@cool-cli/init')
-    console.log('init',projectName,cmdObj.force)
+    console.log('init',projectName,cmdObj.force,process.env.CLI_TARGETPATH)
 }
 module.exports = init
