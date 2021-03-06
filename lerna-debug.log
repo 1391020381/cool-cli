@@ -1,0 +1,11 @@
+0 silly argv {
+0 silly argv   _: [ 'create' ],
+0 silly argv   lernaVersion: '3.22.1',
+0 silly argv   '$0': 'lerna',
+0 silly argv   name: '@cool-cli/commands/init'
+0 silly argv }
+1 notice cli v3.22.1
+2 verbose rootPath /Users/zhoujin/Desktop/web/cool-cli
+3 error TypeError: Expected the input to be `string | string[]`
+3 error     at camelCase (/Users/zhoujin/Desktop/web/cool-cli/node_modules/camelcase/index.js:34:9)
+3 error     at CreateCommand.initialize (/Users/zhoujin/Desktop/web/cool-cli/node_modules/@lerna/create/index.js:63:22)
