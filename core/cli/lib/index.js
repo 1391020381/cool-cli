@@ -9,19 +9,14 @@ const pathExists = require('path-exists').sync;
 const commander = require('commander')
 const log = require('@cool-cli/log')
 const init = require('@cool-cli/init')
+const exec = require('@cool-cli/exec')
 const semver = require('semver')
 const constant = require('./constant')
 let args;
 const program = new commander.Command();
 async function core() {
     try{
-        checkPkgVersion();
-        checkNodeVersion()
-        checkRoot()
-        checkUserHome()
-        // checkInputArgs()
-        checkEnv()
-       await checkGlobalUpate()
+       prepare()
        registerCommand()
        log.verbose('debug','test debug log')
     }catch(e){
@@ -39,10 +34,11 @@ function registerCommand(){
     program
         .command('init [projectName]')
         .option('-f,--force','是否强制初始化项目')
-        .action(init)    
+        .action(exec)    
     program.on('option:debug',function(){
         // program.debug 获取不到
         let opts = program.opts()
+        
         if(opts.debug){
             process.env.LOG_LEVEL = 'verbose'
         }else{
@@ -53,7 +49,8 @@ function registerCommand(){
     }) 
     program.on('option:targetPath',function(){
         let opts = program.opts()
-        process.env.CLI_TARGETPATH = opts.targetPath
+        
+        process.env.CLI_TARGET_PATH = opts.targetPath
     })
     program.on('command:*',function(obj){
         const availableCommands = program.commands.map(cmd=> cmd.name())
@@ -69,7 +66,14 @@ function registerCommand(){
         console.log()
     } 
 }
-
+async function prepare(){
+       checkPkgVersion();
+        checkNodeVersion()
+        checkRoot()
+        checkUserHome()
+        checkEnv()
+       await checkGlobalUpate()
+}
  async function checkGlobalUpate(){
     // 1. 获取当前版本号和模块名
     const currentVersion = pkg.version
@@ -93,10 +97,7 @@ function checkEnv(){
             path:dotenvPath
         })
     }
-    // config = dotenv.config({})
-
     createDefaultConfig()
-    log.verbose('环境变量:',process.env.CLI_HOME_PATH)
 }
 function createDefaultConfig(){
     const cliConfig = {
@@ -110,19 +111,8 @@ function createDefaultConfig(){
     // return cliConfig
     process.env.CLI_HOME_PATH = cliConfig.cliHome
 }
-function checkInputArgs(){
-    const minimist = require('minimist')
-    args = minimist(process.argv.slice(2))
-    checkArgs()
-}
-function checkArgs(){
-    if(args.debug){
-        process.env.LOG_LEVEL = 'verbose'
-    }else{
-        process.env.LOG_LEVEL = 'info'
-    }
-    log.level = process.env.LOG_LEVEL
-}
+
+
 function checkUserHome(){
     if(!userHome || !pathExists(userHome)){
         throw new Error(colors.red('当前登录用户主目录不存在!'))
